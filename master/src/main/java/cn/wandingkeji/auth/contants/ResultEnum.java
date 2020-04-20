@@ -1,8 +1,6 @@
 package cn.wandingkeji.auth.contants;
 
-import lombok.Data;
 
-@Data
 public enum ResultEnum {
 
 
