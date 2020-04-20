@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.wandingkeji.auth.mapper.AuthDeptRoleMapper">
+
+    <resultMap id="BaseResultMap" type="cn.wandingkeji.auth.domain.AuthDeptRole">
+        <id column="id" property="id" />
+        <result column="dept_id" property="deptId" />
+        <result column="role_id" property="roleId" />
+        <result column="pid" property="pid" />
+    </resultMap>
+
+    <!--批量插入-->
+    <insert id="insertBatch">
+        insert into tbl_auth_dept_role values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id},#{item.deptId},#{item.roleId}
+            <if test="item.pid != null || item.pid != ''">
+                ,#{item.pid}
+            </if>
+            )
+        </foreach>
+    </insert>
+
+    <!--查询部门是否存在该角色-->
+    <select id="selectDeptRoleByRoleId" resultMap="BaseResultMap">
+
+        select distinct role_id from tbl_auth_dept_role where dept_id=#{deptId}  and role_id in
+        (
+          <foreach collection="items" item="item" index="index" separator=",">
+             #{item}
+          </foreach>
+        )
+
+    </select>
+</mapper>

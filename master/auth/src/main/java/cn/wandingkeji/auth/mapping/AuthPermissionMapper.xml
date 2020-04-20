@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.wandingkeji.auth.mapper.AuthPermissionMapper">
+
+    <resultMap id="BaseResultMap" type="cn.wandingkeji.auth.domain.AuthPermission">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="url" property="url" />
+        <result column="desc" property="desc" />
+        <result column="filter_type" property="filterType" />
+        <result column="pid" property="pid" />
+        <result column="topCode" property="topCode" />
+    </resultMap>
+
+
+    <select id="selectPerList" resultType="java.lang.String">
+      select DISTINCT id from tbl_auth_per where id in (
+        <foreach collection="items" item="item" index="index" separator=",">
+            #{item}
+        </foreach>
+      )
+    </select>
+
+    <!--查询所有权限-->
+    <select id="selectPerPage" resultMap="BaseResultMap">
+        SELECT a.id,a.name,a.url,a.desc,a.filter_type,a.pid,a.top_code FROM tbl_auth_per a
+        <where>
+            <if test="menuName!= null and menuName!=''">
+                AND a.name like "%"#{menuName, jdbcType=VARCHAR}"%"
+            </if>
+            <if test="pcode!= null and pcode!=''">
+                AND pid = #{pcode}
+            </if>
+            <if test="topcode!= null and topcode!=''">
+                AND top_code = #{topcode}
+            </if>
+        </where>
+    </select>
+</mapper>

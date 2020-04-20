@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.wandingkeji.auth.mapper.AuthRoleMapper">
+
+
+    <select id="selectRoleList" resultType="java.lang.String">
+        select id from tbl_auth_role where id in (
+            <foreach collection="items" item="item" index="index" separator=",">
+                #{item}
+            </foreach>
+        )
+    </select>
+
+
+</mapper>

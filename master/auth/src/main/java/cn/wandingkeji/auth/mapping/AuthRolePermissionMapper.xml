@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.wandingkeji.auth.mapper.AuthRolePermissionMapper">
+
+    <resultMap id="BaseResultMap" type="cn.wandingkeji.auth.domain.AuthRolePermission">
+        <id column="id" property="id" />
+        <result column="per_id" property="perId" />
+        <result column="dept_role_id" property="deptRoleId"/>
+        <result column="dept_id" property="deptId" />
+        <result column="role_id" property="roleId" />
+    </resultMap>
+
+    <!--批量插入-->
+    <insert id="insertBatch">
+        insert into tbl_auth_role_per values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id},#{item.deptRoleId},#{item.roleId},#{item.deptId},#{item.perId})
+        </foreach>
+    </insert>
+
+    <!--查询角色是否存在该权限-->
+    <select id="selectRolePerByRoleId" resultMap="BaseResultMap">
+        select per_id from tbl_auth_role_per where dept_role_id=#{deptRoleId}
+        and per_id in (
+        <foreach collection="items" item="item" index="index" separator=",">
+            #{item}
+        </foreach>)
+    </select>
+
+
+
+</mapper>

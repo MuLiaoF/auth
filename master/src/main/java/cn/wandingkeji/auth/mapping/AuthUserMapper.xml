@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.wandingkeji.auth.mapper.AuthUserMapper">
+
+    <resultMap id="PerBaseResultMap" type="cn.wandingkeji.auth.domain.AuthPermission">
+        <result column="per_id" property="id" />
+    </resultMap>
+
+    <!--查询该用户下角色对应的权限-->
+    <select id="selectUserRolePerByUserId" resultMap="PerBaseResultMap">
+      select per_id from
+        tbl_auth_user au
+        left join tbl_auth_user_role aur
+        on au.id=aur.user_id
+        left JOIN tbl_auth_role_per arp
+        on aur.role_id=arp.role_id
+      WHERE au.id=#{id}
+    </select>
+
+</mapper>
